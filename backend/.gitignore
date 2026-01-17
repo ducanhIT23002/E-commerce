@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### infor ###
+env.properties
+backend/src/main/resources/env.properties
