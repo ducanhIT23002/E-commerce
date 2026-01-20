@@ -5,13 +5,21 @@ import com.shop.backend.entity.User;
 import com.shop.backend.repository.UserRepository;
 // import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.BeanUtils; 
+import org.springframework.security.crypto.password.PasswordEncoder; 
 
-@Service // Đánh dấu đây là nơi xử lý logic
+
+
+@Service 
 public class UserService {
 
     private final UserRepository userRepository;
-    public UserService(UserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
    
@@ -25,9 +33,14 @@ public class UserService {
         }
 
         User newUser = new User();
-        newUser.setUsername(request.getUsername());
-        newUser.setEmail(request.getEmail());
-        newUser.setPassword(request.getPassword()); 
+
+        BeanUtils.copyProperties(request, newUser);
+        // newUser.setUsername(request.getUsername());
+        // newUser.setEmail(request.getEmail());
+        // newUser.setPassword(request.getPassword()); 
+
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+
         newUser.setRole("USER"); 
 
  

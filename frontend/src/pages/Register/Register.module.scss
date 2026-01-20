@@ -1,0 +1,36 @@
+/* src/pages/Register/Register.module.scss */
+
+.registerPage {
+  width: 100%;
+  background-color: #f0f2f5; 
+  min-height: calc(100vh - 70px);  
+  display: flex;
+  align-items: center;      
+  justify-content: center;   
+  
+  padding: 20px 0;           
+}
+
+.card {
+  border: none;
+  border-radius: 10px;      
+  overflow: hidden;
+}
+
+.cardHeader {
+  background-color: #0d6efd;
+  color: white;
+  text-align: center;
+  padding: 20px 15px;        
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 576px) {
+  .cardHeader {
+    font-size: 1.25rem; 
+    padding: 15px;
+  }
+}
