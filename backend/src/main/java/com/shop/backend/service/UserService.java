@@ -35,9 +35,6 @@ public class UserService {
         User newUser = new User();
 
         BeanUtils.copyProperties(request, newUser);
-        // newUser.setUsername(request.getUsername());
-        // newUser.setEmail(request.getEmail());
-        // newUser.setPassword(request.getPassword()); 
 
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
 

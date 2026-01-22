@@ -3,13 +3,14 @@ import axiosClient from "./axiosClient";
 
 const authApi = {
   register(data) {
-    // Gọi đến đường dẫn /auth/register
-    // axiosClient đã lo phần http://localhost:8080/api rồi
-    return axiosClient.post('/auth/register', data);
+    const url = '/auth/register';
+    return axiosClient.post(url, data);
   },
   
-  // Sau này có login thì thêm vào đây:
-  // login(data) { return axiosClient.post('/auth/login', data); }
+  login(data) {
+    const url = '/auth/login'; 
+    return axiosClient.post(url, data);
+  }
 };
 
 export default authApi;

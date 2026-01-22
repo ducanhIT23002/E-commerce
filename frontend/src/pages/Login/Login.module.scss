@@ -1,0 +1,70 @@
+.loginPage {
+  width: 100%;
+  min-height: 100vh;
+  // Giữ nguyên background Gradient Đen cho đồng bộ
+  background: linear-gradient(135deg, #1f1f1f 0%, #000000 100%);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 400px; // Login form thường bé hơn Register form xíu
+  background-color: #ffffff;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  
+  :global {
+    .ant-card-body {
+      padding: 40px 30px;
+    }
+  }
+}
+
+.headerSection {
+  text-align: center;
+  margin-bottom: 30px;
+  
+  h2 {
+    font-weight: 800 !important;
+    letter-spacing: 1px;
+    color: #000000;
+  }
+}
+
+.optionsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.submitBtn {
+  height: 45px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: #000000;
+  
+  &:hover {
+    background-color: #333333 !important;
+    border-color: #333333 !important;
+  }
+}
+
+.footerSection {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.linkText {
+  color: #000000;
+  font-weight: bold;
+  text-decoration: underline;
+  
+  &:hover {
+    color: #555555;
+  }
+}

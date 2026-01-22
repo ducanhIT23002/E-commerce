@@ -1,8 +1,11 @@
 // src/api/axiosClient.js
 import axios from 'axios';
 
+const sever = 'https://shop-backend-6lun.onrender.com/api';
+const local = 'http://localhost:8080/api';
+
 const axiosClient = axios.create({
-  baseURL: 'https://shop-backend-6lun.onrender.com/api', 
+  baseURL: sever, 
   headers: {
     'Content-Type': 'application/json',
   },
