@@ -17,25 +17,25 @@ const Register = () => {
     setErrorMsg('');
     
     try {
-      await authApi.register({
+      const response = await authApi.register({
         username: values.username,
         email: values.email,
         password: values.password
       });
 
-      message.success('Registration successful! Redirecting to login...');
+
+      message.success(response.message || 'Registration successful! Redirecting to login...');
+      
       setTimeout(() => {
         navigate('/login');
       }, 1500);
 
     } catch (error) {
-      if (error.response && error.response.status === 409) {
-        setErrorMsg(error.response.data); 
-      } 
-      else if (error.response && error.response.data) {
-        setErrorMsg(typeof error.response.data === 'string' ? error.response.data : 'Registration failed');
-      } 
-      else {
+
+      
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrorMsg(error.response.data.message);
+      } else {
         setErrorMsg("Server is not responding. Please try again later.");
       }
     } finally {

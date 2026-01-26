@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Typography } from 'antd';
+import { Button, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { CarOutlined } from '@ant-design/icons';
+import styles from './Home.module.scss';
 
 const { Title, Text } = Typography;
 
@@ -12,45 +14,47 @@ const Home = () => {
     const userData = localStorage.getItem('user');
     if (userData) {
       setUser(JSON.parse(userData));
-    } else {
-      navigate('/login');
     }
-  }, [navigate]);
-
-  const handleLogout = () => {
-
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user');
-
-    navigate('/login');
-  };
+  }, []);
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      height: '100vh', 
-      backgroundColor: '#f0f2f5' 
-    }}>
-      <Card style={{ width: 400, textAlign: 'center' }} bordered={false}>
-        <Title level={2}>🏡 Home</Title>
-        <Text type="secondary">Login Success</Text>
-        
-        <div style={{ margin: '30px 0', padding: '15px', background: '#f9f9f9', borderRadius: '8px' }}>
-          <Text strong>Hello</Text>
-          <br />
-
-          <Title level={4} style={{ marginTop: 5, color: '#1890ff' }}>
-            {user?.email || 'User'}
-          </Title>
-          <Text type="secondary">Role: {user?.roles || 'Member'}</Text>
+    <div className={styles.homePage}>
+      <div className={styles.heroSection}>
+        <div className={styles.content}>
+          <Title level={1} style={{ color: 'white' }}>Find The Best Parking Spot Near You</Title>
+          <Text style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: 18, display: 'block', marginBottom: 30 }}>
+            Secure, automated, and hassle-free parking management system. 
+            Check real-time availability and book your spot in seconds.
+          </Text>
+          
+          <div className={styles.ctaButtons}>
+            <Button 
+              type="primary" 
+              size="large" 
+              shape="round" 
+              icon={<CarOutlined />}
+              style={{ height: 50, padding: '0 40px', fontSize: 18 }}
+              onClick={() => navigate('/parking')} 
+            >
+              Find Parking Spot
+            </Button>
+            
+            {!user && (
+               <Button 
+               size="large" 
+               shape="round" 
+               ghost 
+               style={{ height: 50, padding: '0 40px', fontSize: 18, color: 'white', borderColor: 'white' }}
+               onClick={() => navigate('/register')}
+             >
+               Join Now
+             </Button>
+            )}
+          </div>
         </div>
+      </div>
 
-        <Button type="primary" danger size="large" onClick={handleLogout} block>
-          Logout
-        </Button>
-      </Card>
+
     </div>
   );
 };

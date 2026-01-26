@@ -12,35 +12,34 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const onFinish = async (values) => {
+const onFinish = async (values) => {
     setLoading(true);
     setErrorMsg('');
     
     try {
-      // 1. GỌI API LOGIN (Sửa lại key thành email)
       const response = await authApi.login({
-        email: values.email,      // 👉 Đã đổi từ username sang email
+        email: values.email,
         password: values.password
       });
 
-      // 2. Xử lý thành công
-      // Axios Interceptor của bạn đã trả về response.data, nên response ở đây là object chứa token
-      if (response.token) {
-        localStorage.setItem('access_token', response.token);
-        localStorage.setItem('user', JSON.stringify(response)); 
+
+      if (response.data && response.data.token) {
         
-        message.success('Welcome back ' + response.username + '!');
+        localStorage.setItem('access_token', response.data.token);
         
-        // 3. Chuyển hướng
+
+        localStorage.setItem('user', JSON.stringify(response.data)); 
+        
+        message.success(response.message || 'Welcome back!');
+        
         setTimeout(() => {
           navigate('/'); 
         }, 1000);
       }
 
     } catch (error) {
-      // 4. XỬ LÝ LỖI (Lấy message từ Backend trả về)
-      // error.response.data chính là chuỗi: "Error: Invalid email or password!"
-      const msg = error.response?.data || 'Login failed. Please try again later.';
+      
+      const msg = error.response?.data?.message || 'Login failed. Please try again later.';
       setErrorMsg(msg);
     } finally {
       setLoading(false);
