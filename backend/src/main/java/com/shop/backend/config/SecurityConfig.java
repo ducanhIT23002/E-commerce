@@ -20,7 +20,7 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 public class SecurityConfig {
 
-    // 1. Mã hóa mật khẩu (BCrypt)
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -42,29 +42,29 @@ public class SecurityConfig {
         return authBuilder.build();
     }
 
-    // 4. Cấu hình các quy tắc bảo mật (Bộ lọc)
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Tắt CSRF để test API dễ hơn
-            .cors(cors -> cors.disable()) // Tắt CORS mặc định để dùng cấu hình Custom bên dưới
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Không lưu session (vì dùng Token)
+            .csrf(csrf -> csrf.disable()) 
+            .cors(cors -> cors.disable()) 
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() // Cho phép Login/Register thoải mái
-                .requestMatchers("/api/parking-slots/**").permitAll() // Cho phép xem bãi đỗ xe không cần login
-                .anyRequest().authenticated() // Còn lại phải đăng nhập mới được vào
+                .requestMatchers("/api/auth/**").permitAll() 
+                .requestMatchers("/api/parking-slots/**").permitAll() 
+                .anyRequest().authenticated() 
             );
         
         return http.build();
     }
     
-    // 5. Cấu hình CORS (Cho phép Frontend gọi vào)
+
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("*"); // Cho phép tất cả các nguồn (localhost:3000, mobile...)
+        config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);

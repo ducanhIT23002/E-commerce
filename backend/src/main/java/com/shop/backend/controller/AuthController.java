@@ -1,5 +1,6 @@
 package com.shop.backend.controller;
 
+import com.shop.backend.dto.ApiResponseDTO; // Import class này
 import com.shop.backend.dto.JwtResponse;
 import com.shop.backend.dto.LoginRequest;
 import com.shop.backend.dto.UserRegisterDTO;
@@ -24,41 +25,49 @@ public class AuthController {
 
     
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserRegisterDTO request) {
+    public ResponseEntity<ApiResponseDTO<User>> register(@RequestBody UserRegisterDTO request) {
         try {
-            User newUser = userService.registerUser(request);
+            
+            ApiResponseDTO<User> response = userService.registerUser(request);
             
             return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(newUser);
+                    .status(response.getStatus()) 
+                    .body(response);
+
         } catch (RuntimeException e) {
             
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
-                    .body(e.getMessage());
+                    .body(new ApiResponseDTO<>(409, e.getMessage(), null));
+                    
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponseDTO<>(500, "Registration failed: " + e.getMessage(), null));
         }
     }
 
     
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<ApiResponseDTO<JwtResponse>> login(@RequestBody LoginRequest request) {
         try {
-            JwtResponse response = authService.login(request);
+            
+            ApiResponseDTO<JwtResponse> response = authService.login(request);
             
             return ResponseEntity
-                    .status(HttpStatus.OK)
+                    .status(response.getStatus()) 
                     .body(response);
 
         } catch (org.springframework.security.authentication.BadCredentialsException e) {
-
+           
             return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED) 
-                    .body(e.getMessage());          
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponseDTO<>(401, "Invalid email or password", null));
 
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error: " + e.getMessage());
+                    .body(new ApiResponseDTO<>(500, "Internal Server Error: " + e.getMessage(), null));
         }
     }
 }

@@ -5,7 +5,7 @@ const sever = 'https://shop-backend-6lun.onrender.com/api';
 const local = 'http://localhost:8080/api';
 
 const axiosClient = axios.create({
-  baseURL: sever, 
+  baseURL: local, 
   headers: {
     'Content-Type': 'application/json',
   },
