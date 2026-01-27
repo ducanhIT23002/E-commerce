@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApiResponseDTO<T> {
-    private int status;      // Ví dụ: 200, 404
-    private String message;  // Ví dụ: "Xử lý thành công"
-    private T data;          // Dữ liệu chính (User, Token, List...)
+    private int status;      
+    private String message;  
+    private T data;         
 }

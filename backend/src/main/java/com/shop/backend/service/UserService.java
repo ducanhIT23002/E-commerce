@@ -8,6 +8,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class UserService {
 
@@ -21,17 +23,20 @@ public class UserService {
 
     public ApiResponseDTO<User> registerUser(UserRegisterDTO request) {
 
-        if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username already exists!"); 
-        }
+        // Chỉ check Email trùng (Bỏ check Username)
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already exists!");
         }
 
         User newUser = new User();
+        // Copy các trường khớp tên (email, password, fullName...)
         BeanUtils.copyProperties(request, newUser);
+        
+        // Mã hóa pass
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
-        newUser.setRole("USER");
+        
+        // Set mặc định ví tiền = 0
+        newUser.setBalance(BigDecimal.ZERO);
 
         User savedUser = userRepository.save(newUser);
 

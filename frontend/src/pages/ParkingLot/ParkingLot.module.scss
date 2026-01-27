@@ -1,7 +1,7 @@
 .parkingContainer {
   padding: 30px 50px;
   background-color: #f5f5f5;
-  min-height: calc(100vh - 64px); // Trừ đi Header
+  min-height: calc(100vh - 64px); 
 
   .header {
     display: flex;
@@ -30,8 +30,8 @@
         border-radius: 50%;
         margin-right: 8px;
 
-        &.available { background-color: #52c41a; } // Xanh lá
-        &.booked { background-color: #ff4d4f; }    // Đỏ
+        &.available { background-color: #52c41a; } 
+        &.booked { background-color: #ff4d4f; }    
       }
     }
   }
@@ -44,21 +44,31 @@
 
   .slotCard {
     text-align: center;
-    transition: all 0.3s;
+    transition: all 0.3s ease; // Hiệu ứng chuyển động mượt mà
     border-radius: 10px;
     
-    // Style cho ô TRỐNG
+    // 1. Style cho ô TRỐNG (Tương tác được)
     &.cardAvailable {
       border: 2px solid #52c41a;
       background-color: #f6ffed;
+      cursor: pointer; // Hiện bàn tay chỉ vào
+      
       .carIcon { color: #52c41a; }
+
+      // Hiệu ứng khi di chuột vào (Hover)
+      &:hover {
+        transform: translateY(-5px); // Nổi lên 1 chút
+        box-shadow: 0 5px 15px rgba(82, 196, 26, 0.3); // Đổ bóng xanh
+      }
     }
 
-    // Style cho ô ĐÃ ĐẶT
+    // 2. Style cho ô ĐÃ ĐẶT (Không tương tác)
     &.cardBooked {
       border: 2px solid #ff4d4f;
       background-color: #fff1f0;
-      opacity: 0.8;
+      opacity: 0.6; // Làm mờ đi 1 chút
+      cursor: not-allowed; // Hiện icon cấm bấm
+      
       .carIcon { color: #ff4d4f; }
     }
 
@@ -66,17 +76,18 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 10px 0;
+      padding: 15px 0;
 
       .slotName {
         font-size: 18px;
         font-weight: bold;
         margin-bottom: 10px;
+        color: #333;
       }
 
       .carIcon {
-        font-size: 32px;
-        margin-bottom: 5px;
+        font-size: 36px;
+        margin-bottom: 10px;
       }
     }
   }

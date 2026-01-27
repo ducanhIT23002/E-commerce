@@ -13,71 +13,54 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/parking-slots")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*") // Cho phép Frontend gọi API
 public class ParkingSlotController {
 
     @Autowired
     private ParkingSlotService parkingSlotService;
 
-    //Get all slots
+    // 1. Get all slots (Giữ nguyên)
     @GetMapping
     public ResponseEntity<ApiResponseDTO<List<ParkingSlotEntity>>> getAllSlots() {
         try {
             ApiResponseDTO<List<ParkingSlotEntity>> response = parkingSlotService.getAllSlots();
-            
-            return ResponseEntity
-                    .status(response.getStatus())
-                    .body(response);
-                    
+            return ResponseEntity.status(response.getStatus()).body(response);
         } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponseDTO<>(500, "Failed to retrieve slots: " + e.getMessage(), null));
         }
     }
 
-    //Create new slot
+    // 2. Create new slot (TẠM THỜI VÔ HIỆU HÓA ĐỂ TRÁNH LỖI)
+    /*
     @PostMapping
     public ResponseEntity<ApiResponseDTO<ParkingSlotEntity>> createSlot(@RequestBody ParkingSlotEntity slot) {
         try {
             ApiResponseDTO<ParkingSlotEntity> response = parkingSlotService.createSlot(slot);
-            
-            return ResponseEntity
-                    .status(response.getStatus())
-                    .body(response);
-                    
+            return ResponseEntity.status(response.getStatus()).body(response);
         } catch (RuntimeException e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponseDTO<>(400, e.getMessage(), null));
-                    
         } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponseDTO<>(500, "Error creating slot: " + e.getMessage(), null));
         }
     }
-    
-    //Update status
+    */
+
+    // 3. Update status (Giữ nguyên)
     @PutMapping("/{id}/status")
     public ResponseEntity<ApiResponseDTO<ParkingSlotEntity>> updateStatus(
-            @PathVariable Long id, 
+            @PathVariable Long id,
             @RequestParam SlotStatus status) {
         try {
             ApiResponseDTO<ParkingSlotEntity> response = parkingSlotService.updateStatus(id, status);
-            
-            return ResponseEntity
-                    .status(response.getStatus())
-                    .body(response);
-                    
+            return ResponseEntity.status(response.getStatus()).body(response);
         } catch (RuntimeException e) {
-             return ResponseEntity
-                     .status(HttpStatus.NOT_FOUND)
-                     .body(new ApiResponseDTO<>(404, e.getMessage(), null));
-                     
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponseDTO<>(404, e.getMessage(), null));
         } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponseDTO<>(500, "Error updating status: " + e.getMessage(), null));
         }
     }

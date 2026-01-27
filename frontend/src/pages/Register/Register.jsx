@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Card, Typography, ConfigProvider, Alert, message } from 'antd';
-import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, MailOutlined, LockOutlined, PhoneOutlined } from '@ant-design/icons'; // Thêm PhoneOutlined
 import { Link, useNavigate } from 'react-router-dom';
 import authApi from '../../api/authApi';
 import styles from './Register.module.scss'; 
@@ -17,12 +17,13 @@ const Register = () => {
     setErrorMsg('');
     
     try {
+      // 👉 GỬI DỮ LIỆU ĐÚNG CHUẨN BACKEND MỚI
       const response = await authApi.register({
-        username: values.username,
         email: values.email,
-        password: values.password
+        password: values.password,
+        fullName: values.fullName, // Thay cho username
+        phone: values.phone        // Thêm số điện thoại
       });
-
 
       message.success(response.message || 'Registration successful! Redirecting to login...');
       
@@ -31,8 +32,6 @@ const Register = () => {
       }, 1500);
 
     } catch (error) {
-
-      
       if (error.response && error.response.data && error.response.data.message) {
         setErrorMsg(error.response.data.message);
       } else {
@@ -61,7 +60,6 @@ const Register = () => {
             <Text type="secondary">Create account to reserve your spot</Text>
           </div>
 
-        
           {errorMsg && (
             <Alert 
               message={errorMsg} 
@@ -79,13 +77,26 @@ const Register = () => {
             layout="vertical"
             size="large"
           >
+            {/* 1. NHẬP HỌ TÊN (Thay thế Username) */}
             <Form.Item
-              name="username"
-              rules={[{ required: true, message: 'Please enter username' }]}
+              name="fullName"
+              rules={[{ required: true, message: 'Please enter your full name' }]}
             >
-              <Input prefix={<UserOutlined />} placeholder="Username" />
+              <Input prefix={<UserOutlined />} placeholder="Full Name" />
             </Form.Item>
 
+            {/* 2. NHẬP SỐ ĐIỆN THOẠI (Mới thêm) */}
+            <Form.Item
+              name="phone"
+              rules={[
+                { required: true, message: 'Please enter phone number' },
+                { pattern: /^[0-9]{10,11}$/, message: 'Invalid phone number format' }
+              ]}
+            >
+              <Input prefix={<PhoneOutlined />} placeholder="Phone Number" />
+            </Form.Item>
+
+            {/* 3. EMAIL (Giữ nguyên) */}
             <Form.Item
               name="email"
               rules={[
@@ -96,6 +107,7 @@ const Register = () => {
               <Input prefix={<MailOutlined />} placeholder="Email Address" />
             </Form.Item>
 
+            {/* 4. PASSWORD (Giữ nguyên) */}
             <Form.Item
               name="password"
               rules={[{ required: true, message: 'Please enter password' }]}

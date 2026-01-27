@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Typography, Row, Col, Spin, Tag, message, Button } from 'antd';
+import { Card, Typography, Row, Col, Spin, Tag, message, Button , Modal} from 'antd';
 import { CarOutlined, ReloadOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import parkingApi from '../../api/parkingApi'; 
 import styles from './ParkingLot.module.scss'; 
 
@@ -9,6 +10,10 @@ const { Title, Text } = Typography;
 const ParkingLot = () => {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
+
+
 
   const fetchSlots = async () => {
     setLoading(true);
@@ -28,6 +33,54 @@ const ParkingLot = () => {
   useEffect(() => {
     fetchSlots();
   }, []);
+
+
+ console.log('Slots data:', slots); // Debugging line
+
+  const handleBooking = (slot) => {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      Modal.confirm({
+        title: 'Login Required',
+        content: 'You need to login to book a parking slot.',
+        okText: 'Go to Login',
+        onOk: () => navigate('/login'),
+      });
+      return;
+    }
+
+    if (slot.status !== 'AVAILABLE') {
+      return; 
+    }
+
+    Modal.confirm({
+      title: `Confirm Booking: ${slot.name}`,
+      content: 'Do you want to book this parking slot?',
+      okText: 'Yes, Book it',
+      cancelText: 'Cancel',
+      onOk: async () => {
+        try {
+          const response = await parkingApi.updateStatus(slot.id, 'BOOKED');
+
+          if (response.status === 200) {
+            message.success('Booking successful!');
+            
+            setSlots(prevSlots => 
+              prevSlots.map(s => 
+                s.id === slot.id ? { ...s, status: 'BOOKED' } : s
+              )
+            );
+          }
+        } catch (error) {
+          console.error(error);
+          message.error('Booking failed. Please try again.');
+        }
+      }
+    });
+  };
+
+
+
   return (
     <div className={styles.parkingContainer}>
 
@@ -63,7 +116,8 @@ const ParkingLot = () => {
                 <Card 
                   className={`${styles.slotCard} ${isAvailable ? styles.cardAvailable : styles.cardBooked}`}
                   bordered={false}
-                  hoverable
+                  hoverable={isAvailable} // Chỉ hiện hiệu ứng hover nếu ô trống
+                  onClick={() => handleBooking(slot)} // Bấm vào để đặt
                 >
                   <div className={styles.slotContent}>
                     <div className={styles.slotName}>{slot.name}</div>

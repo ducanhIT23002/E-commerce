@@ -4,19 +4,27 @@ import com.shop.backend.enums.SlotStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Entity // (1)
-@Table(name = "parking_slots") // (2)
-@Data // (3)
+@Entity
+@Table(name = "parking_slots") // Khớp bảng 'parking_slots'
+@Data // Lombok sẽ tự sinh getStatus, setStatus
 public class ParkingSlotEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // (4)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true) // (5)
-    private String name; 
-
-    @Enumerated(EnumType.STRING) // (6)
     @Column(nullable = false)
-    private SlotStatus status = SlotStatus.AVAILABLE; // (7)
+    private String name; // Ví dụ: A-01
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SlotStatus status = SlotStatus.AVAILABLE; // Phải có dòng này thì mới có setStatus
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    // Quan hệ với Zone
+    @ManyToOne
+    @JoinColumn(name = "zone_id")
+    private ZoneEntity zone;
 }

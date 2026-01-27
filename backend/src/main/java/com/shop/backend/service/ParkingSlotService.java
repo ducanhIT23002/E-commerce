@@ -18,23 +18,21 @@ public class ParkingSlotService {
     // 1. Get all slots
     public ApiResponseDTO<List<ParkingSlotEntity>> getAllSlots() {
         List<ParkingSlotEntity> slots = parkingSlotRepository.findAll();
-        
         return new ApiResponseDTO<>(200, "Retrieved all parking slots successfully", slots);
     }
 
-    // 2. Create slot
+    // 2. Create slot (Tạm thời vô hiệu hóa logic tạo để tránh lỗi thiếu Zone)
+    /*
     public ApiResponseDTO<ParkingSlotEntity> createSlot(ParkingSlotEntity slot) {
         if (parkingSlotRepository.existsByName(slot.getName())) {
             throw new RuntimeException("Parking slot with this name already exists!");
         }
-        
         slot.setStatus(SlotStatus.AVAILABLE);
-        
-        ParkingSlotEntity savedSlot = parkingSlotRepository.save(slot);
-        
-        return new ApiResponseDTO<>(201, "Parking slot created successfully", savedSlot);
+        return new ApiResponseDTO<>(201, "Created", parkingSlotRepository.save(slot));
     }
+    */
 
+    // 3. Update status
     public ApiResponseDTO<ParkingSlotEntity> updateStatus(Long id, SlotStatus newStatus) {
         ParkingSlotEntity slot = parkingSlotRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Parking slot not found!"));
