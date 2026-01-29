@@ -27,7 +27,6 @@ public class BookingEntity {
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
-    // --- CÁC MỐI NỐI QUAN TRỌNG ---
     
     @ManyToOne
     @JoinColumn(name = "user_id")

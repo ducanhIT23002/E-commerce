@@ -1,27 +1,25 @@
 package com.shop.backend.config;
 
-import com.shop.backend.security.AuthTokenFilter; // Import filter vừa tạo
+import com.shop.backend.security.AuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     private AuthTokenFilter authTokenFilter; 
@@ -32,44 +30,42 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-        
-        authBuilder
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-
-        return authBuilder.build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.disable()) 
+            
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            
+  
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            
+
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()           // Đăng nhập/Đăng ký -> Cho qua
-                .requestMatchers("/api/parking-slots/**").permitAll()  // Xem bãi xe -> Cho qua
-                .anyRequest().authenticated()                          // Còn lại -> Phải có Token
+                .requestMatchers("/api/auth/**").permitAll()         
+                .requestMatchers("/api/parking-slots/**").permitAll() 
+                .anyRequest().authenticated()                         
             );
 
-        // QUAN TRỌNG: Thêm filter kiểm tra Token vào trước filter gốc
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.setAllowCredentials(true); 
+        config.setAllowedOrigins(List.of("http://localhost:5173")); 
+        config.setAllowedHeaders(List.of("*")); 
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+        return source;
     }
 }

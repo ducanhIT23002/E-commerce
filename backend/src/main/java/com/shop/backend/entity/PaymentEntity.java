@@ -17,7 +17,7 @@ public class PaymentEntity {
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    private PaymentMethod method; // WALLET, CASH...
+    private PaymentMethod method; 
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();

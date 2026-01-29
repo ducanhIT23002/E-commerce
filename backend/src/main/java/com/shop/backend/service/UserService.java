@@ -5,6 +5,7 @@ import com.shop.backend.dto.UserRegisterDTO;
 import com.shop.backend.entity.User;
 import com.shop.backend.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,33 +14,28 @@ import java.math.BigDecimal;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public ApiResponseDTO<User> registerUser(UserRegisterDTO request) {
 
-        // Chỉ check Email trùng (Bỏ check Username)
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists!");
+            return new ApiResponseDTO<>(409, "Email already exists!", null);
         }
 
         User newUser = new User();
-        // Copy các trường khớp tên (email, password, fullName...)
+        
         BeanUtils.copyProperties(request, newUser);
         
-        // Mã hóa pass
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
         
-        // Set mặc định ví tiền = 0
         newUser.setBalance(BigDecimal.ZERO);
 
         User savedUser = userRepository.save(newUser);
 
-        return new ApiResponseDTO<>(201, "User registered successfully", savedUser);
+        return new ApiResponseDTO<>(201, "Registration successful!", savedUser);
     }
 }

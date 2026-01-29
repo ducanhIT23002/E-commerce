@@ -15,32 +15,33 @@ public class ParkingSlotService {
     @Autowired
     private ParkingSlotRepository parkingSlotRepository;
 
-    // 1. Get all slots
     public ApiResponseDTO<List<ParkingSlotEntity>> getAllSlots() {
         List<ParkingSlotEntity> slots = parkingSlotRepository.findAll();
-        return new ApiResponseDTO<>(200, "Retrieved all parking slots successfully", slots);
+        return new ApiResponseDTO<>(200, "get list successfully", slots);
     }
 
-    // 2. Create slot (Tạm thời vô hiệu hóa logic tạo để tránh lỗi thiếu Zone)
-    /*
     public ApiResponseDTO<ParkingSlotEntity> createSlot(ParkingSlotEntity slot) {
         if (parkingSlotRepository.existsByName(slot.getName())) {
-            throw new RuntimeException("Parking slot with this name already exists!");
+            return new ApiResponseDTO<>(409, "name already exists!", null);
         }
-        slot.setStatus(SlotStatus.AVAILABLE);
-        return new ApiResponseDTO<>(201, "Created", parkingSlotRepository.save(slot));
-    }
-    */
 
-    // 3. Update status
+        slot.setStatus(SlotStatus.AVAILABLE);
+        
+        ParkingSlotEntity savedSlot = parkingSlotRepository.save(slot);
+        
+        return new ApiResponseDTO<>(201, "create successfully", savedSlot);
+    }
+
     public ApiResponseDTO<ParkingSlotEntity> updateStatus(Long id, SlotStatus newStatus) {
-        ParkingSlotEntity slot = parkingSlotRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Parking slot not found!"));
-        
+        ParkingSlotEntity slot = parkingSlotRepository.findById(id).orElse(null);
+
+        if (slot == null) {
+            return new ApiResponseDTO<>(404, "Slot not found", null);
+        }
+
         slot.setStatus(newStatus);
-        
         ParkingSlotEntity updatedSlot = parkingSlotRepository.save(slot);
-        
-        return new ApiResponseDTO<>(200, "Slot status updated successfully", updatedSlot);
+
+        return new ApiResponseDTO<>(200, "update status successfully", updatedSlot);
     }
 }

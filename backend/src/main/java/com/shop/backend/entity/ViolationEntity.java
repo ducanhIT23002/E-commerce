@@ -14,7 +14,7 @@ public class ViolationEntity {
     private Long id;
 
     @Column(name = "violation_type")
-    private String violationType; // Vd: Đỗ sai chỗ
+    private String violationType; 
 
     @Column(name = "fine_amount")
     private BigDecimal fineAmount;

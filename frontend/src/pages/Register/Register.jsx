@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Card, Typography, ConfigProvider, Alert, message } from 'antd';
-import { UserOutlined, MailOutlined, LockOutlined, PhoneOutlined } from '@ant-design/icons'; // Thêm PhoneOutlined
+import { UserOutlined, MailOutlined, LockOutlined, PhoneOutlined } from '@ant-design/icons'; 
 import { Link, useNavigate } from 'react-router-dom';
 import authApi from '../../api/authApi';
 import styles from './Register.module.scss'; 
@@ -17,12 +17,11 @@ const Register = () => {
     setErrorMsg('');
     
     try {
-      // 👉 GỬI DỮ LIỆU ĐÚNG CHUẨN BACKEND MỚI
       const response = await authApi.register({
         email: values.email,
         password: values.password,
-        fullName: values.fullName, // Thay cho username
-        phone: values.phone        // Thêm số điện thoại
+        fullName: values.fullName, 
+        phone: values.phone       
       });
 
       message.success(response.message || 'Registration successful! Redirecting to login...');
@@ -77,7 +76,6 @@ const Register = () => {
             layout="vertical"
             size="large"
           >
-            {/* 1. NHẬP HỌ TÊN (Thay thế Username) */}
             <Form.Item
               name="fullName"
               rules={[{ required: true, message: 'Please enter your full name' }]}
@@ -85,7 +83,6 @@ const Register = () => {
               <Input prefix={<UserOutlined />} placeholder="Full Name" />
             </Form.Item>
 
-            {/* 2. NHẬP SỐ ĐIỆN THOẠI (Mới thêm) */}
             <Form.Item
               name="phone"
               rules={[
@@ -96,7 +93,6 @@ const Register = () => {
               <Input prefix={<PhoneOutlined />} placeholder="Phone Number" />
             </Form.Item>
 
-            {/* 3. EMAIL (Giữ nguyên) */}
             <Form.Item
               name="email"
               rules={[
@@ -107,7 +103,6 @@ const Register = () => {
               <Input prefix={<MailOutlined />} placeholder="Email Address" />
             </Form.Item>
 
-            {/* 4. PASSWORD (Giữ nguyên) */}
             <Form.Item
               name="password"
               rules={[{ required: true, message: 'Please enter password' }]}

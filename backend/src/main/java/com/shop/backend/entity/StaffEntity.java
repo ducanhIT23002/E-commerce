@@ -14,7 +14,7 @@ public class StaffEntity {
 
     private String name;
     private String email;
-    private String shift; // Ca làm việc (Sáng/Chiều/Tối)
+    private String shift; 
 
     @Enumerated(EnumType.STRING)
     private StaffRole role;

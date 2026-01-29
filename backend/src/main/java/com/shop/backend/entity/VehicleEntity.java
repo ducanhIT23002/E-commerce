@@ -16,9 +16,9 @@ public class VehicleEntity {
     private String plateNumber;
 
     @Enumerated(EnumType.STRING)
-    private VehicleType type; // CAR hoặc MOTO
+    private VehicleType type; 
 
-    private String brand; // Vd: Honda, Toyota
+    private String brand; 
 
     @ManyToOne
     @JoinColumn(name = "user_id")

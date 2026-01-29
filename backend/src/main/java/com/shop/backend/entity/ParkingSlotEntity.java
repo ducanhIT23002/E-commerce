@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "parking_slots") // Khớp bảng 'parking_slots'
-@Data // Lombok sẽ tự sinh getStatus, setStatus
+@Table(name = "parking_slots") 
+@Data 
 public class ParkingSlotEntity {
 
     @Id
@@ -14,16 +14,15 @@ public class ParkingSlotEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String name; // Ví dụ: A-01
+    private String name; 
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private SlotStatus status = SlotStatus.AVAILABLE; // Phải có dòng này thì mới có setStatus
+    private SlotStatus status = SlotStatus.AVAILABLE; 
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    // Quan hệ với Zone
     @ManyToOne
     @JoinColumn(name = "zone_id")
     private ZoneEntity zone;

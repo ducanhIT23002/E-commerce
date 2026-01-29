@@ -18,7 +18,7 @@ public class PriceRateEntity {
     private VehicleType vehicleType;
 
     @Column(name = "price_per_hour")
-    private BigDecimal pricePerHour; // Vd: 20000
+    private BigDecimal pricePerHour; 
 
     @ManyToOne
     @JoinColumn(name = "zone_id")

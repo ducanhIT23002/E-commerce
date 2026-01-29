@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "parking_lots") // Khớp bảng 'parking_lots'
+@Table(name = "parking_lots") 
 @Data
 public class ParkingLotEntity {
 
@@ -13,7 +13,7 @@ public class ParkingLotEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String name; // Ví dụ: Vincom Đồng Khởi
+    private String name; 
 
     private String address;
 

@@ -1,15 +1,14 @@
-// Variables màu sắc
-$bg-color: #000000;      // Đen tuyền
-$text-color: #ffffff;    // Trắng
-$border-color: #333333;  // Xám mờ
+
+$bg-color: #000000;      
+$text-color: #ffffff;    
+$border-color: #333333;  
 
 .headerWrapper {
   width: 100%;
-  height: 70px; // Chiều cao cố định
+  height: 70px; 
   background-color: $bg-color;
   border-bottom: 1px solid $border-color;
   
-  // Giúp header luôn dính trên cùng khi cuộn trang
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -18,7 +17,7 @@ $border-color: #333333;  // Xám mờ
 
 .headerContent {
   display: flex;
-  justify-content: space-between; // Logo trái, Nút phải
+  justify-content: space-between; 
   align-items: center;
   height: 100%;
 }
@@ -43,7 +42,7 @@ $border-color: #333333;  // Xám mờ
 
   .logoText {
     font-size: 20px;
-    font-weight: 800; // In đậm mạnh mẽ
+    font-weight: 800;
     letter-spacing: 1px;
     text-transform: uppercase;
   }
@@ -52,32 +51,32 @@ $border-color: #333333;  // Xám mờ
 .navActions {
   display: flex;
   align-items: center;
-  gap: 12px; // Khoảng cách giữa các nút
+  gap: 12px;
 }
 
-// Custom nút Login (Trong suốt)
+
 .ghostBtn {
-  color: #cccccc !important; // Màu xám nhạt
+  color: #cccccc !important; 
   font-weight: 500;
   
   &:hover {
-    color: #ffffff !important; // Hover vào sáng lên
+    color: #ffffff !important; 
     background-color: rgba(255, 255, 255, 0.1) !important;
   }
 }
 
-// Custom nút Register (Nổi bật)
+
 .primaryBtn {
-  background-color: #ffffff !important; // Nền trắng
-  color: #000000 !important; // Chữ đen
+  background-color: #ffffff !important; 
+  color: #000000 !important; 
   font-weight: 700;
   border: none;
   height: 40px;
   padding: 0 24px;
   
   &:hover {
-    background-color: #e0e0e0 !important; // Hover thì xám đi chút
+    background-color: #e0e0e0 !important; 
     color: #000000 !important;
-    transform: translateY(-1px); // Hiệu ứng nhấc nút lên nhẹ
+    transform: translateY(-1px); 
   }
 }

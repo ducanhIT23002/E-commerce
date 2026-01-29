@@ -17,33 +17,42 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager; 
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private JwtUtils jwtUtils;
+    private JwtUtils jwtUtils; 
 
     public ApiResponseDTO<JwtResponse> login(LoginRequest request) {
-        
-        // 1. Xác thực bằng Email & Password
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
+        try {
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
 
-        // 2. Tạo Token từ Email
-        String jwt = jwtUtils.generateToken(request.getEmail());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // 3. Lấy User từ DB
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Error: Email not found!"));
+            String jwt = jwtUtils.generateToken(request.getEmail());
 
-        // 4. Trả về JwtResponse (Dùng email làm username)
-        JwtResponse jwtResponse = new JwtResponse(jwt, user.getId(), user.getEmail(), user.getFullName());
+            User user = userRepository.findByEmail(request.getEmail()).orElse(null);
+            
+            if (user == null) {
+                return new ApiResponseDTO<>(404, "User not found!", null);
+            }
 
-        return new ApiResponseDTO<>(200, "Login successful", jwtResponse);
+            JwtResponse jwtResponse = new JwtResponse(
+                    jwt, 
+                    user.getId(), 
+                    user.getEmail(), 
+                    user.getFullName()
+            );
+
+            return new ApiResponseDTO<>(200, "Login successful", jwtResponse);
+
+        } catch (Exception e) {
+            return new ApiResponseDTO<>(401, "Email or password is incorrect!", null);
+        }
     }
 }

@@ -44,30 +44,28 @@
 
   .slotCard {
     text-align: center;
-    transition: all 0.3s ease; // Hiệu ứng chuyển động mượt mà
+    transition: all 0.3s ease;
     border-radius: 10px;
     
-    // 1. Style cho ô TRỐNG (Tương tác được)
+   
     &.cardAvailable {
       border: 2px solid #52c41a;
       background-color: #f6ffed;
-      cursor: pointer; // Hiện bàn tay chỉ vào
+      cursor: pointer; 
       
       .carIcon { color: #52c41a; }
 
-      // Hiệu ứng khi di chuột vào (Hover)
       &:hover {
-        transform: translateY(-5px); // Nổi lên 1 chút
-        box-shadow: 0 5px 15px rgba(82, 196, 26, 0.3); // Đổ bóng xanh
+        transform: translateY(-5px); 
+        box-shadow: 0 5px 15px rgba(82, 196, 26, 0.3); 
       }
     }
 
-    // 2. Style cho ô ĐÃ ĐẶT (Không tương tác)
     &.cardBooked {
       border: 2px solid #ff4d4f;
       background-color: #fff1f0;
-      opacity: 0.6; // Làm mờ đi 1 chút
-      cursor: not-allowed; // Hiện icon cấm bấm
+      opacity: 0.6;
+      cursor: not-allowed;
       
       .carIcon { color: #ff4d4f; }
     }
@@ -93,7 +91,7 @@
   }
 }
 
-// Mobile Responsive
+
 @media (max-width: 576px) {
   .parkingContainer {
     padding: 20px;

@@ -11,9 +11,8 @@ public class ZoneEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // Tên khu (Vd: Tầng Hầm B1)
+    private String name; 
 
-    // Zone thuộc về ParkingLot
     @ManyToOne
     @JoinColumn(name = "parking_lot_id")
     private ParkingLotEntity parkingLot;
