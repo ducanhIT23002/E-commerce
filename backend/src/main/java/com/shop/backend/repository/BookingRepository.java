@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
@@ -16,4 +17,6 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
     List<BookingEntity> findBySlot(ParkingSlotEntity slot);
     List<BookingEntity> findBySlotAndStatus(ParkingSlotEntity slot, BookingStatus status);
     List<BookingEntity> findByStartTimeBeforeAndEndTimeAfter(LocalDateTime endTime, LocalDateTime startTime);
+
+    // Optional<User> findByIdAndUserId(Long bookingId, Long id);
 }

@@ -1,7 +1,7 @@
 package com.shop.backend.entity;
 
 import com.shop.backend.enums.BookingStatus;
-import com.shop.backend.enums.PaymentStatus; // Tạo thêm enum này nếu chưa có, hoặc dùng String tạm
+import com.shop.backend.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
